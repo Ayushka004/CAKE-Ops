@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USA Time Zones Map</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jqvmap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.usa.js"></script>
+</head>
+<body>
+    <h1>USA Time Zones Map</h1>
+    <div id="timezones">
+        <div class="timezone-box" style="background-color: #FF9999;" id="pacific-time">Pacific Time: </div>
+        <div class="timezone-box" style="background-color: #99CCFF;" id="mountain-time">Mountain Time: </div>
+        <div class="timezone-box" style="background-color: #99FF99;" id="central-time">Central Time: </div>
+        <div class="timezone-box" style="background-color: #FFCC99;" id="eastern-time">Eastern Time: </div>
+        <div class="timezone-box" style="background-color: #FFD700;" id="alaska-time">Alaska Time: </div>
+        <div class="timezone-box" style="background-color: #3155cc;" id="hawaii-time">Hawaii Time: </div>
+    </div>
+    <div id="map"></div>
+    <div id="popup"></div>
+    <p>Hover over a state to see its name, time zone, and current time.</p>
+    <script src="script.js"></script>
+</body>
+</html>
+
