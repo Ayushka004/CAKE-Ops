@@ -4,176 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USA Time Zones Map</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jqvmap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.usa.js"></script>
-    
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        #timezones {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .timezone-box {
-            padding: 10px;
-            border: 1px solid black;
-            border-radius: 5px;
-            min-width: 150px;
-            text-align: center;
-            font-weight: bold;
-        }
-        #map {
-            width: 100%;
-            max-width: 900px;
-            height: 80vh;
-            margin: auto;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px gray;
-        }
-        .close-btn {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
 </head>
 <body>
     <h1>USA Time Zones Map</h1>
 
     <div id="timezones">
-        <div class="timezone-box" style="background-color: #FF9999;" id="pacific-time">Pacific Time: </div>
-        <div class="timezone-box" style="background-color: #99CCFF;" id="mountain-time">Mountain Time: </div>
-        <div class="timezone-box" style="background-color: #99FF99;" id="central-time">Central Time: </div>
-        <div class="timezone-box" style="background-color: #FFCC99;" id="eastern-time">Eastern Time: </div>
-        <div class="timezone-box" style="background-color: #FFD700;" id="alaska-time">Alaska Time: </div>
-        <div class="timezone-box" style="background-color: #3155cc;" id="hawaii-time">Hawaii Time: </div>
+        <div class="timezone-box" id="pacific-time">Pacific Time: </div>
+        <div class="timezone-box" id="mountain-time">Mountain Time: </div>
+        <div class="timezone-box" id="central-time">Central Time: </div>
+        <div class="timezone-box" id="eastern-time">Eastern Time: </div>
+        <div class="timezone-box" id="alaska-time">Alaska Time: </div>
+        <div class="timezone-box" id="hawaii-time">Hawaii Time: </div>
     </div>
 
     <div id="map"></div>
 
     <div id="modal" class="modal">
-        <p class="modal-content" id="modal-text"></p>
+        <p id="modal-text"></p>
         <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
 
-    <script>
-        function updateTime() {
-            const timeZones = {
-                "pacific-time": "America/Los_Angeles",
-                "mountain-time": "America/Denver",
-                "central-time": "America/Chicago",
-                "eastern-time": "America/New_York",
-                "alaska-time": "America/Anchorage",
-                "hawaii-time": "Pacific/Honolulu"
-            };
-
-            for (let id in timeZones) {
-                document.getElementById(id).textContent = id.replace("-", " ").toUpperCase() + ": " + 
-                    new Date().toLocaleString("en-US", { timeZone: timeZones[id], hour: "2-digit", minute: "2-digit", second: "2-digit" });
-            }
-        }
-
-        setInterval(updateTime, 1000);
-
-        $(document).ready(function() {
-            const timeZones = {
-                "Pacific Time": ["WA", "OR", "CA", "NV"],
-                "Mountain Time": ["MT", "ID", "WY", "UT", "CO", "AZ", "NM"],
-                "Central Time": ["ND", "SD", "NE", "KS", "OK", "TX", "MN", "IA", "MO", "AR", "LA", "WI", "IL", "MS", "AL", "TN"],
-                "Eastern Time": ["MI", "IN", "KY", "GA", "FL", "SC", "NC", "VA", "WV", "OH", "PA", "NY", "VT", "NH", "ME", "MA", "RI", "CT", "NJ", "DE", "MD", "DC"],
-                "Alaska Time": ["AK"],
-                "Hawaii Time": ["HI"]
-            };
-
-            const colors = {
-                "Pacific Time": "#FF9999",
-                "Mountain Time": "#99CCFF",
-                "Central Time": "#99FF99",
-                "Eastern Time": "#FFCC99",
-                "Alaska Time": "#FFD700",
-                "Hawaii Time": "#3155cc"
-            };
-
-            let stateColors = {};
-            Object.keys(timeZones).forEach(zone => {
-                timeZones[zone].forEach(state => {
-                    stateColors[state.toLowerCase()] = colors[zone];
-                });
-            });
-
-            $('#map').vectorMap({
-                map: 'usa_en',
-                backgroundColor: '#ffffff',
-                borderColor: '#000000',
-                hoverOpacity: 0.7,
-                selectedColor: '#666666',
-                enableZoom: false,
-                showTooltip: true,
-                colors: stateColors,
-                onRegionClick: function(event, code, region) {
-                    let timeZone = "Unknown";
-                    Object.keys(timeZones).forEach(zone => {
-                        if (timeZones[zone].includes(code.toUpperCase())) {
-                            timeZone = zone;
-                        }
-                    });
-
-                    let currentTime = new Date().toLocaleString("en-US", {
-                        timeZone: getTimeZoneID(timeZone),
-                        hour: "2-digit", minute: "2-digit", second: "2-digit"
-                    });
-
-                    showModal(region, currentTime);
-                }
-            });
-
-            function getTimeZoneID(zone) {
-                const timeZoneMap = {
-                    "Pacific Time": "America/Los_Angeles",
-                    "Mountain Time": "America/Denver",
-                    "Central Time": "America/Chicago",
-                    "Eastern Time": "America/New_York",
-                    "Alaska Time": "America/Anchorage",
-                    "Hawaii Time": "Pacific/Honolulu"
-                };
-                return timeZoneMap[zone] || "America/New_York";
-            }
-
-            function showModal(stateName, time) {
-                document.getElementById("modal-text").innerHTML = `State: <b>${stateName}</b><br>Current Time: <b>${time}</b>`;
-                document.getElementById("modal").style.display = "block";
-            }
-
-            function closeModal() {
-                document.getElementById("modal").style.display = "none";
-            }
-
-            window.closeModal = closeModal;
-
-            updateTime(); // Initial time update
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

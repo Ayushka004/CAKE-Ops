@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+#timezones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.timezone-box {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    min-width: 150px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#pacific-time { background-color: #FF9999; }
+#mountain-time { background-color: #99CCFF; }
+#central-time { background-color: #99FF99; }
+#eastern-time { background-color: #FFCC99; }
+#alaska-time { background-color: #FFD700; }
+#hawaii-time { background-color: #3155cc; }
+
+#map {
+    width: 100%;
+    max-width: 900px;
+    height: 80vh;
+    margin: auto;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+.close-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
