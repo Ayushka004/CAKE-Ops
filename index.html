@@ -8,6 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.usa.js"></script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +18,7 @@
         #timezones {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -29,83 +31,148 @@
             font-weight: bold;
         }
         #map {
-            width: 800px;
-            height: 500px;
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
             margin: auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px gray;
+        }
+        .close-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <h1>USA Time Zones Map</h1>
+
     <div id="timezones">
         <div class="timezone-box" style="background-color: #FF9999;" id="pacific-time">Pacific Time: </div>
         <div class="timezone-box" style="background-color: #99CCFF;" id="mountain-time">Mountain Time: </div>
         <div class="timezone-box" style="background-color: #99FF99;" id="central-time">Central Time: </div>
         <div class="timezone-box" style="background-color: #FFCC99;" id="eastern-time">Eastern Time: </div>
         <div class="timezone-box" style="background-color: #FFD700;" id="alaska-time">Alaska Time: </div>
+        <div class="timezone-box" style="background-color: #3155cc;" id="hawaii-time">Hawaii Time: </div>
     </div>
+
     <div id="map"></div>
-    <p>Click on a state to see its name and time zone.</p>
+
+    <div id="modal" class="modal">
+        <p class="modal-content" id="modal-text"></p>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+
     <script>
         function updateTime() {
-            let options = { timeZoneName: 'short' };
-            document.getElementById("pacific-time").textContent = "Pacific Time: " + new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles", ...options });
-            document.getElementById("mountain-time").textContent = "Mountain Time: " + new Date().toLocaleString("en-US", { timeZone: "America/Denver", ...options });
-            document.getElementById("central-time").textContent = "Central Time: " + new Date().toLocaleString("en-US", { timeZone: "America/Chicago", ...options });
-            document.getElementById("eastern-time").textContent = "Eastern Time: " + new Date().toLocaleString("en-US", { timeZone: "America/New_York", ...options });
-            document.getElementById("alaska-time").textContent = "Alaska Time: " + new Date().toLocaleString("en-US", { timeZone: "America/Anchorage", ...options });
-            document.getElementById("Hawaii-time").textContent = "Hawaii Time: " + new Date().toLocaleString("en-US", { timeZone: "america/hawaii", ...options });
+            const timeZones = {
+                "pacific-time": "America/Los_Angeles",
+                "mountain-time": "America/Denver",
+                "central-time": "America/Chicago",
+                "eastern-time": "America/New_York",
+                "alaska-time": "America/Anchorage",
+                "hawaii-time": "Pacific/Honolulu"
+            };
 
+            for (let id in timeZones) {
+                document.getElementById(id).textContent = id.replace("-", " ").toUpperCase() + ": " + 
+                    new Date().toLocaleString("en-US", { timeZone: timeZones[id], hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            }
         }
+
         setInterval(updateTime, 1000);
-        
+
         $(document).ready(function() {
-            var timeZones = {
+            const timeZones = {
                 "Pacific Time": ["WA", "OR", "CA", "NV"],
                 "Mountain Time": ["MT", "ID", "WY", "UT", "CO", "AZ", "NM"],
                 "Central Time": ["ND", "SD", "NE", "KS", "OK", "TX", "MN", "IA", "MO", "AR", "LA", "WI", "IL", "MS", "AL", "TN"],
                 "Eastern Time": ["MI", "IN", "KY", "GA", "FL", "SC", "NC", "VA", "WV", "OH", "PA", "NY", "VT", "NH", "ME", "MA", "RI", "CT", "NJ", "DE", "MD", "DC"],
                 "Alaska Time": ["AK"],
-                "Hawaii HAST":["HI"]
+                "Hawaii Time": ["HI"]
             };
-            
-            var colors = {
+
+            const colors = {
                 "Pacific Time": "#FF9999",
                 "Mountain Time": "#99CCFF",
                 "Central Time": "#99FF99",
                 "Eastern Time": "#FFCC99",
                 "Alaska Time": "#FFD700",
-                "Hawaii HAST": "#3155cc"
+                "Hawaii Time": "#3155cc"
             };
-            
-            var stateColors = {};
-            
-            $.each(timeZones, function(zone, states) {
-                $.each(states, function(index, state) {
+
+            let stateColors = {};
+            Object.keys(timeZones).forEach(zone => {
+                timeZones[zone].forEach(state => {
                     stateColors[state.toLowerCase()] = colors[zone];
                 });
             });
-            
+
             $('#map').vectorMap({
                 map: 'usa_en',
                 backgroundColor: '#ffffff',
                 borderColor: '#000000',
                 hoverOpacity: 0.7,
                 selectedColor: '#666666',
-                enableZoom: true,
+                enableZoom: false,
                 showTooltip: true,
                 colors: stateColors,
-                onRegionClick: function(event, code, region){
-                    var timeZone = "Unknown";
-                    $.each(timeZones, function(zone, states) {
-                        if (states.includes(code.toUpperCase())) {
+                onRegionClick: function(event, code, region) {
+                    let timeZone = "Unknown";
+                    Object.keys(timeZones).forEach(zone => {
+                        if (timeZones[zone].includes(code.toUpperCase())) {
                             timeZone = zone;
                         }
                     });
-                    alert("You clicked on " + region + " (" + timeZone + ")");
+
+                    let currentTime = new Date().toLocaleString("en-US", {
+                        timeZone: getTimeZoneID(timeZone),
+                        hour: "2-digit", minute: "2-digit", second: "2-digit"
+                    });
+
+                    showModal(region, currentTime);
                 }
             });
-            updateTime();
+
+            function getTimeZoneID(zone) {
+                const timeZoneMap = {
+                    "Pacific Time": "America/Los_Angeles",
+                    "Mountain Time": "America/Denver",
+                    "Central Time": "America/Chicago",
+                    "Eastern Time": "America/New_York",
+                    "Alaska Time": "America/Anchorage",
+                    "Hawaii Time": "Pacific/Honolulu"
+                };
+                return timeZoneMap[zone] || "America/New_York";
+            }
+
+            function showModal(stateName, time) {
+                document.getElementById("modal-text").innerHTML = `State: <b>${stateName}</b><br>Current Time: <b>${time}</b>`;
+                document.getElementById("modal").style.display = "block";
+            }
+
+            function closeModal() {
+                document.getElementById("modal").style.display = "none";
+            }
+
+            window.closeModal = closeModal;
+
+            updateTime(); // Initial time update
         });
     </script>
 </body>
