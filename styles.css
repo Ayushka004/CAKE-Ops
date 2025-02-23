@@ -23,9 +23,7 @@ body {
 
 #map {
     width: 100%;
-    max-width: 900px;
-    height: 80vh;
-    margin: auto;
+    height: 60vh;
 }
 
 #selected-location {
@@ -105,3 +103,4 @@ text {
 #suggestions div:hover {
     background-color: #f0f0f0;
 }
+

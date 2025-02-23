@@ -16,12 +16,50 @@
 
     <!-- Time Zone Boxes -->
     <div id="timezones">
-        <div class="timezone-box" id="pacific-time">Pacific Time: </div>
-        <div class="timezone-box" id="mountain-time">Mountain Time: </div>
-        <div class="timezone-box" id="central-time">Central Time: </div>
-        <div class="timezone-box" id="eastern-time">Eastern Time: </div>
-        <div class="timezone-box" id="alaska-time">Alaska Time: </div>
-        <div class="timezone-box" id="hawaii-time">Hawaii Time: </div>
+        <div class="timezone-box">
+            Pacific Time 
+            <hr>
+            <div id="pacific-time"></div> 
+        </div>
+
+        <div class="timezone-box">
+            Mountain Time
+            <hr>
+            <div id="mountain-time"></div>
+        </div>
+
+        <div class="timezone-box">
+            Central Time
+            <hr>
+            <div id="central-time"></div>
+        </div>
+
+        <div class="timezone-box" >
+            Eastern Time 
+            <hr>
+            <div id="eastern-time"></div>
+        </div>
+
+        <div class="timezone-box" >
+            Alaska Time
+            <hr>
+            <div id="alaska-time"></div>
+        </div>
+
+        <div class="timezone-box">
+            Hawaii Time
+            <hr>
+            <div id="hawaii-time"></div>
+        </div>
+    </div>
+
+    <br>
+    <hr>
+        <!-- File Upload & Search Bar -->
+    <div id="bottom-section">
+        <input type="file" id="uploadExcel" accept=".xlsx, .csv">
+        <input type="text" id="searchBar" placeholder="Search for a business...">
+        <div id="suggestions"></div>
     </div>
 
     <!-- Map Container -->
@@ -31,13 +69,6 @@
     <div id="selected-location">
         <h2>Selected Location Info</h2>
         <p id="location-text">No location selected</p>
-    </div>
-
-    <!-- File Upload & Search Bar -->
-    <div id="bottom-section">
-        <input type="file" id="uploadExcel" accept=".xlsx, .csv">
-        <input type="text" id="searchBar" placeholder="Search for a business...">
-        <div id="suggestions"></div>
     </div>
 
     <!-- Scripts -->

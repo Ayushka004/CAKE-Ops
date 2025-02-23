@@ -18,6 +18,6 @@ function updateTime() {
             hour12: true,
         });
         document.getElementById(id).textContent =
-            id.replace("-", " ").toUpperCase() + ": " + timeString;
+            timeString;
     }
 }
