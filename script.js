@@ -269,20 +269,13 @@ $(document).ready(function () {
             second: "2-digit",
         });
 
-        // Limit the number of businesses to 30 lines
-        const businessesArray = businessList.split("<br>");
-        const limitedBusinesses = businessesArray.slice(0, 30).join("<br>");
-        const overflow =
-            businessesArray.length > 30
-                ? `<br><i>+${businessesArray.length - 30} more...</i>`
-                : "";
-
+        // Display all businesses in a scrollable area
         document.getElementById("location-text").innerHTML = `
             <b>Location:</b> ${city}<br>
             <b>Time:</b> ${timeString}<br>
             <b>Businesses:</b><br>
             <div style="max-height: 300px; overflow-y: auto;">
-                ${limitedBusinesses}${overflow}
+                ${businessList}
             </div>
         `;
     }
