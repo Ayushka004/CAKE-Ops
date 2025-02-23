@@ -21,18 +21,22 @@ body {
     font-weight: bold;
 }
 
-#pacific-time { background-color: #FF9999; }
-#mountain-time { background-color: #99CCFF; }
-#central-time { background-color: #99FF99; }
-#eastern-time { background-color: #FFCC99; }
-#alaska-time { background-color: #FFD700; }
-#hawaii-time { background-color: #3155cc; }
-
 #map {
     width: 100%;
     max-width: 900px;
     height: 80vh;
     margin: auto;
+}
+
+#selected-location {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid black;
+    background-color: #f9f9f9;
+}
+
+#bottom-section {
+    margin-top: 20px;
 }
 
 .modal {
@@ -56,4 +60,27 @@ body {
     border: none;
     cursor: pointer;
     font-size: 16px;
+}
+
+text {
+    font-size: 10px;
+    font-weight: bold;
+    fill: #000000; /* Text color */
+    text-shadow: 1px 1px 2px white; /* Add a shadow for better visibility */
+}
+
+#bottom-section {
+    margin-top: 20px;
+}
+
+#timezones {
+    margin-bottom: 20px;
+}
+
+#map {
+    margin-bottom: 20px;
+}
+
+#selected-location {
+    margin-top: 20px;
 }

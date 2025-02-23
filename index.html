@@ -9,10 +9,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.usa.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
 <body>
     <h1>USA Time Zones Map</h1>
 
+    <!-- Time Zone Boxes -->
     <div id="timezones">
         <div class="timezone-box" id="pacific-time">Pacific Time: </div>
         <div class="timezone-box" id="mountain-time">Mountain Time: </div>
@@ -22,13 +24,29 @@
         <div class="timezone-box" id="hawaii-time">Hawaii Time: </div>
     </div>
 
+    <!-- Map Container -->
     <div id="map"></div>
 
+    <!-- Modal for Detailed Info -->
     <div id="modal" class="modal">
         <p id="modal-text"></p>
         <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
 
+    <!-- Selected Location Info -->
+    <div id="selected-location">
+        <h2>Selected Location Info</h2>
+        <p id="location-text">No location selected</p>
+    </div>
+
+    <!-- File Upload & Search Bar -->
+    <div id="bottom-section">
+        <input type="file" id="uploadExcel" accept=".xlsx, .csv">
+        <input type="text" id="searchBar" placeholder="Search for a business...">
+        <div id="suggestions"></div>
+    </div>
+
+    <!-- Script Reference -->
     <script src="script.js"></script>
 </body>
 </html>
