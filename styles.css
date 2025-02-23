@@ -50,15 +50,6 @@ body {
     box-shadow: 0px 0px 10px gray;
 }
 
-.close-btn {
-    margin-top: 10px;
-    padding: 5px 10px;
-    background-color: red;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-}
 
 text {
     font-size: 10px;
@@ -68,7 +59,7 @@ text {
 }
 
 #bottom-section {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 #timezones {
@@ -87,7 +78,7 @@ text {
     max-height: 200px; /* Adjust height as needed */
     overflow-y: auto;
     border: 1px solid #ccc;
-    background-color: #fff;
+    background-color: yellowgreen;
     position: absolute;
     z-index: 1000;
     width: 100%;
