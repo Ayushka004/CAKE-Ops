@@ -252,7 +252,6 @@ $(document).ready(function () {
                 ? businesses.join("<br>")
                 : "No businesses found.";
             updateLocationInfo(region, businessList);
-            showModal(region, businessList);
         },
     });
 
@@ -270,34 +269,22 @@ $(document).ready(function () {
             second: "2-digit",
         });
 
+        // Limit the number of businesses to 30 lines
+        const businessesArray = businessList.split("<br>");
+        const limitedBusinesses = businessesArray.slice(0, 30).join("<br>");
+        const overflow =
+            businessesArray.length > 30
+                ? `<br><i>+${businessesArray.length - 30} more...</i>`
+                : "";
+
         document.getElementById("location-text").innerHTML = `
             <b>Location:</b> ${city}<br>
             <b>Time:</b> ${timeString}<br>
-            <b>Businesses:</b> ${businessList || "No businesses found."}
+            <b>Businesses:</b><br>
+            <div style="max-height: 300px; overflow-y: auto;">
+                ${limitedBusinesses}${overflow}
+            </div>
         `;
-    }
-
-    // Show modal with location and business info
-    function showModal(city, businessList) {
-        console.log(
-            `📢 Showing modal for ${city} with businesses:`,
-            businessList
-        );
-        $("#modal-text").html(`
-            City: <b>${city}</b><br>
-            Time: <b>${new Date().toLocaleString("en-US", {
-                timeZone: getTimeZoneDetails(getTimeZone(city)),
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-            })}</b><br><br>
-            Businesses:<br>${businessList || "No businesses found."}
-        `);
-        $("#modal").show();
     }
 
     // Handle search bar input
@@ -343,7 +330,6 @@ $(document).ready(function () {
             );
             highlightState(regionCode);
             updateLocationInfo(cityOrState, business.name);
-            showModal(cityOrState, business.name);
             $("#suggestions").hide();
             $("#searchBar").val("");
         } else {
@@ -427,12 +413,6 @@ $(document).ready(function () {
         };
         return timeZoneMap[zone] || "America/New_York";
     }
-
-    // Close modal
-    window.closeModal = function () {
-        console.log("❌ Closing modal.");
-        $("#modal").hide();
-    };
 
     // Initialize time in timezone boxes
     updateTime();
